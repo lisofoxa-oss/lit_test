@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Подготовка за тест по литература – Николай Хайтов и „Тютюн“ от Димитър Димов">
+    <title>📖 Литературна подготовка – Алиса</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Inter:wght@400;500&amp;display=swap');
+        
+        :root {
+            --tw-color-primary: #8b4513;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .book-bg {
+            background: linear-gradient(135deg, #1a0f08 0%, #3c2a1f 100%);
+        }
+        
+        .nav-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .nav-link:hover {
+            transform: translateY(-2px);
+            color: #f5d6a0 !important;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(139 69 19 / 0.2), 0 8px 10px -6px rgb(139 69 19 / 0.2);
+        }
+        
+        .flip-card {
+            perspective: 1000px;
+        }
+        
+        .flip-card-inner {
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            backface-visibility: hidden;
+        }
+        
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+        
+        .progress-bar {
+            animation: progress 1.5s ease-in-out;
+        }
+        
+        .hero-pattern {
+            background-image: 
+                linear-gradient(rgba(139, 69, 19, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 69, 19, 0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+    </style>
+</head>
+<body class="book-bg text-amber-100 min-h-screen">
+    <!-- NAVBAR -->
+    <nav class="bg-[#2c1e15] border-b border-amber-900 sticky top-0 z-50 shadow-xl">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-x-3">
+                    <div class="w-10 h-10 bg-amber-800 rounded-2xl flex items-center justify-center text-3xl shadow-inner">📖</div>
+                    <div>
+                        <h1 class="heading-font text-2xl font-bold tracking-tight text-amber-100">Литература</h1>
+                        <p class="text-[10px] text-amber-400 -mt-1 tracking-[1px]">Хайтов • Тютюн</p>
+                    </div>
+                </div>
+
+                <!-- Menu -->
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a onclick="navigateTo('home')" class="nav-link flex items-center gap-x-1 cursor-pointer hover:text-amber-200">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Начало</span>
+                    </a>
+                    <a onclick="navigateTo('theory')" class="nav-link flex items-center gap-x-1 cursor-pointer hover:text-amber-200">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Теория</span>
+                    </a>
+                    <a onclick="navigateTo('characters')" class="nav-link flex items-center gap-x-1 cursor-pointer hover:text-amber-200">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Персонажи</span>
+                    </a>
+                    <a onclick="navigateTo('themes')" class="nav-link flex items-center gap-x-1 cursor-pointer hover:text-amber-200">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Теми &amp; Мотиви</span>
+                    </a>
+                    <a onclick="navigateTo('quiz')" class="nav-link flex items-center gap-x-1 cursor-pointer hover:text-amber-200">
+                        <i class="fa-solid fa-question-circle"></i>
+                        <span>Тест</span>
+                    </a>
+                    <a onclick="navigateTo('flashcards')" class="nav-link flex items-center gap-x-1 cursor-pointer hover:text-amber-200">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Флашкарти</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-x-4">
+                    <div onclick="toggleDarkMode()" class="cursor-pointer w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-amber-900 transition-colors">
+                        <i class="fa-solid fa-moon text-xl"></i>
+                    </div>
+                    <div class="flex items-center bg-amber-900/50 text-amber-100 text-xs font-medium px-4 h-9 rounded-3xl border border-amber-700">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse mr-1.5"></div>
+                        Алиса е готова!
+                    </div>
+                    <button onclick="showMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-[#2c1e15] border-t border-amber-900 px-4 py-3 text-sm">
+            <div onclick="navigateTo('home');hideMenu()" class="flex items-center gap-x-3 py-3 px-4 hover:bg-amber-900/30 rounded-2xl">🏠 Начало</div>
+            <div onclick="navigateTo('theory');hideMenu()" class="flex items-center gap-x-3 py-3 px-4 hover:bg-amber-900/30 rounded-2xl">📚 Теория</div>
+            <div onclick="navigateTo('characters');hideMenu()" class="flex items-center gap-x-3 py-3 px-4 hover:bg-amber-900/30 rounded-2xl">👥 Персонажи</div>
+            <div onclick="navigateTo('themes');hideMenu()" class="flex items-center gap-x-3 py-3 px-4 hover:bg-amber-900/30 rounded-2xl">💡 Теми &amp; Мотиви</div>
+            <div onclick="navigateTo('quiz');hideMenu()" class="flex items-center gap-x-3 py-3 px-4 hover:bg-amber-900/30 rounded-2xl">❓ Тест</div>
+            <div onclick="navigateTo('flashcards');hideMenu()" class="flex items-center gap-x-3 py-3 px-4 hover:bg-amber-900/30 rounded-2xl">🔄 Флашкарти</div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div id="home" class="hero-pattern py-12 md:py-20">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6">
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-x-2 bg-amber-900/60 text-amber-200 text-sm px-5 py-2 rounded-3xl">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        ПОДГОТОВКА ЗА ТЕСТ ПО ЛИТЕРАТУРА
+                    </div>
+                    <h1 class="heading-font text-5xl md:text-6xl font-bold leading-none text-amber-100 tracking-tighter">
+                        Николай Хайтов<br>и <span class="text-amber-300">„Тютюн“</span>
+                    </h1>
+                    <p class="text-xl text-amber-200 max-w-md">Всичко, което ти трябва за отличен на теста! Теория, тестове, флашкарти и упражнения по твоите бележки.</p>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="navigateTo('theory')" 
+                                class="bg-amber-800 hover:bg-amber-700 px-8 py-4 rounded-3xl font-semibold flex items-center gap-x-3 text-lg transition-all active:scale-95">
+                            <i class="fa-solid fa-book-open"></i>
+                            Започни с теория
+                        </button>
+                        <button onclick="navigateTo('quiz')" 
+                                class="border-2 border-amber-400 hover:bg-amber-400 hover:text-[#2c1e15] px-8 py-4 rounded-3xl font-semibold flex items-center gap-x-3 text-lg transition-all active:scale-95">
+                            <i class="fa-solid fa-question-circle"></i>
+                            Пробвай сега на тест
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center gap-x-8 text-sm pt-4">
+                        <div class="flex items-center gap-x-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>Композиция</span>
+                        </div>
+                        <div class="flex items-center gap-x-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>Персонажи</span>
+                        </div>
+                        <div class="flex items-center gap-x-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>Теми &amp; конфликти</span>
+                        </div>
+                        <div class="flex items-center gap-x-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>Символика</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Decorative book illustration -->
+                <div class="hidden md:flex justify-end">
+                    <div class="relative w-80 h-80 flex items-center justify-center">
+                        <div class="absolute w-72 h-96 bg-gradient-to-br from-amber-800 to-amber-950 rounded-3xl rotate-[-12deg] shadow-2xl flex flex-col items-center justify-center p-8 text-center border border-amber-700">
+                            <div class="text-7xl mb-6">📘</div>
+                            <h3 class="heading-font text-3xl font-bold mb-1">Тютюн</h3>
+                            <p class="text-amber-300">Димитър Димов</p>
+                            <div class="mt-auto text-xs bg-amber-900/70 px-6 py-1 rounded-3xl">I част • XV глава • композиционна рамка</div>
+                        </div>
+                        <div class="absolute -top-6 -right-6 w-72 h-96 bg-gradient-to-br from-[#3c2a1f] to-amber-900 rounded-3xl rotate-[8deg] shadow-2xl flex flex-col items-center justify-center p-8 text-center border border-amber-700 opacity-90">
+                            <div class="text-6xl mb-4">✍️</div>
+                            <p class="text-lg font-medium">Твоите бележки</p>
+                            <p class="text-amber-300 text-sm mt-8">Ирина • Борис • метаморфоза • съдба</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- THEORY SECTION -->
+    <div id="theory" class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-16 hidden">
+        <h2 class="heading-font text-4xl font-bold mb-8 flex items-center gap-x-4">
+            <span>📚</span> Теория
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Хайтов -->
+            <div class="bg-[#3c2a1f] rounded-3xl p-8 card-hover">
+                <div class="flex items-center gap-x-4 mb-6">
+                    <div class="text-4xl">👨‍💼</div>
+                    <div>
+                        <h3 class="text-2xl font-semibold">Николай Хайтов – Живот и творчество</h3>
+                        <p class="text-amber-300 text-sm">Български писател, драматург, сценарист</p>
+                    </div>
+                </div>
+                <ul class="space-y-4 text-amber-100">
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check mt-1 text-emerald-400"></i> Роден през 1919 г.</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check mt-1 text-emerald-400"></i> Писател, драматург, сценарист, публицист</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check mt-1 text-emerald-400"></i> Автор на сценарии за филми</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check mt-1 text-emerald-400"></i> Творчеството му е свързано с българската природа и човешките съдби</li>
+                </ul>
+            </div>
+            
+            <!-- Тютюн – особености -->
+            <div class="bg-[#3c2a1f] rounded-3xl p-8 card-hover">
+                <div class="flex items-center gap-x-4 mb-6">
+                    <div class="text-4xl">🌾</div>
+                    <div>
+                        <h3 class="text-2xl font-semibold">„Тютюн“ – Димитър Димов</h3>
+                        <p class="text-amber-300 text-sm">Особености на романа</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <p class="font-semibold mb-2 text-amber-200">Творческа история</p>
+                        <p class="text-sm">Първо издание – 1951 г. (скандално в новата литература). Второ издание – 1954 г. (преработена версия).</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold mb-2 text-amber-200">Жанр</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-amber-900/70 px-4 py-1 text-xs rounded-3xl">Епически роман</span>
+                            <span class="bg-amber-900/70 px-4 py-1 text-xs rounded-3xl">Социален роман</span>
+                            <span class="bg-amber-900/70 px-4 py-1 text-xs rounded-3xl">Любовен роман</span>
+                            <span class="bg-amber-900/70 px-4 py-1 text-xs rounded-3xl">Роман на кариерата</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-semibold mb-2 text-amber-200">Символика</p>
+                        <p class="text-sm">Гроздоберът – символ на греховния живот и упадъка.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Композиция -->
+        <div class="mt-12">
+            <h3 class="text-2xl font-semibold mb-6 flex items-center"><span class="mr-3">🧩</span>Композиция на романа</h3>
+            <div class="bg-[#3c2a1f] rounded-3xl p-8 grid md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="font-medium mb-3 text-amber-300">Композиционна рамка</h4>
+                    <p class="text-sm leading-relaxed">Финалната част и първата образуват рамка. Изграждат смислови противоположности:</p>
+                    <ul class="mt-4 space-y-3 text-sm">
+                        <li class="flex gap-x-2">1. Раждането на романтичните любовни трепети</li>
+                        <li class="flex gap-x-2">2. Краят на любовта (обреченост)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-3 text-amber-300">Персонажите</h4>
+                    <p class="text-sm">Описани са пред погледа на събеседника си. Ирина и Борис претърпяват метаморфоза.</p>
+                    <p class="mt-4 text-xs bg-amber-900/60 p-3 rounded-2xl">Ирина се превръща в свой антипод</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-3 text-amber-300">Трагична обреченост</h4>
+                    <p class="text-sm leading-relaxed">Над героите стои съдбата, която извършва своята мрачна сметка.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARACTERS SECTION -->
+    <div id="characters" class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-16 hidden bg-[#25190f]">
+        <h2 class="heading-font text-4xl font-bold mb-8">👤 Главни персонажи</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Борис -->
+            <div class="bg-[#3c2a1f] rounded-3xl p-8 card-hover">
+                <div class="flex justify-between">
+                    <div class="text-5xl">🧔</div>
+                    <span class="px-5 py-1 bg-red-900/60 text-xs rounded-3xl self-start">Антигерой</span>
+                </div>
+                <h3 class="text-3xl font-semibold mt-6">Борис</h3>
+                <p class="text-amber-300">Озлобен от мизерията, решен да постигне власт над хората.</p>
+                <ul class="mt-8 space-y-4">
+                    <li><i class="fa-solid fa-circle text-xs text-red-400 mr-2"></i> Лишен от чувствителност</li>
+                    <li><i class="fa-solid fa-circle text-xs text-red-400 mr-2"></i> Портретът подчертава студенината</li>
+                    <li><i class="fa-solid fa-circle text-xs text-red-400 mr-2"></i> Деградиран, заслепен от амбиция</li>
+                    <li><i class="fa-solid fa-circle text-xs text-red-400 mr-2"></i> Стремеж към саморазруха</li>
+                </ul>
+            </div>
+            
+            <!-- Ирина -->
+            <div class="bg-[#3c2a1f] rounded-3xl p-8 card-hover">
+                <div class="flex justify-between">
+                    <div class="text-5xl">👩</div>
+                    <span class="px-5 py-1 bg-emerald-900/60 text-xs rounded-3xl self-start">Героиня</span>
+                </div>
+                <h3 class="text-3xl font-semibold mt-6">Ирина</h3>
+                <p class="text-amber-300">Умна и красива, но отстранена от заобикалящата я среда.</p>
+                <ul class="mt-8 space-y-4">
+                    <li><i class="fa-solid fa-circle text-xs text-emerald-400 mr-2"></i> Мечтае да следва медицина в София</li>
+                    <li><i class="fa-solid fa-circle text-xs text-emerald-400 mr-2"></i> Връзката с Борис – възможност за вълнуващ живот</li>
+                    <li><i class="fa-solid fa-circle text-xs text-emerald-400 mr-2"></i> Вътрешен конфликт – почтеност vs. любов</li>
+                    <li><i class="fa-solid fa-circle text-xs text-emerald-400 mr-2"></i> Превръща се в свой антипод</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- THEMES & MOTIFS -->
+    <div id="themes" class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-16 hidden">
+        <h2 class="heading-font text-4xl font-bold mb-8 flex items-center">💡 Теми и мотиви</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-gradient-to-br from-amber-900 to-[#3c2a1f] p-7 rounded-3xl card-hover">
+                <i class="fa-solid fa-seedling text-4xl mb-6"></i>
+                <h4 class="font-semibold text-lg">Мотив за младостта</h4>
+                <p class="text-sm mt-3">Младост и пълноценство</p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-900 to-[#3c2a1f] p-7 rounded-3xl card-hover">
+                <i class="fa-solid fa-coins text-4xl mb-6"></i>
+                <h4 class="font-semibold text-lg">Материално богатство</h4>
+                <p class="text-sm mt-3">Срещу духовна бедност</p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-900 to-[#3c2a1f] p-7 rounded-3xl card-hover">
+                <i class="fa-solid fa-heart text-4xl mb-6"></i>
+                <h4 class="font-semibold text-lg">Човешки ценности</h4>
+                <p class="text-sm mt-3">Проблемът за истинските ценности</p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-900 to-[#3c2a1f] p-7 rounded-3xl card-hover">
+                <i class="fa-solid fa-crown text-4xl mb-6"></i>
+                <h4 class="font-semibold text-lg">Власт и щастие</h4>
+                <p class="text-sm mt-3">Жаждата за власт и невъзможното щастие</p>
+            </div>
+        </div>
+        
+        <div class="mt-12 bg-[#3c2a1f] rounded-3xl p-8">
+            <h3 class="text-xl font-semibold mb-4">Основни конфликти</h3>
+            <div class="space-y-6">
+                <div class="flex gap-6">
+                    <div class="font-mono text-5xl font-light text-amber-400">a)</div>
+                    <div>Конфликт между героите и патриархалната семейна среда</div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="font-mono text-5xl font-light text-amber-400">b)</div>
+                    <div>Вътрешен конфликт на Ирина – избор между Борис и позицията на баща си</div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="font-mono text-5xl font-light text-amber-400">c)</div>
+                    <div>Драматично разминаване между мечти и реалност</div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="font-mono text-5xl font-light text-amber-400">d)</div>
+                    <div>Жаждата за власт и пари на всички човешко ниво</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ SECTION -->
+    <div id="quiz" class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-16 hidden">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="heading-font text-4xl font-bold mb-2 text-center">🧪 Тест за проверка</h2>
+            <p class="text-center text-amber-300 mb-8">8 въпроса по твоите бележки • 100% за отличен</p>
+            
+            <div id="quiz-container" class="bg-[#3c2a1f] rounded-3xl p-8 shadow-2xl">
+                <!-- JS will inject questions here -->
+            </div>
+            
+            <div class="flex justify-between mt-6 text-sm">
+                <button onclick="prevQuestion()" id="prev-btn" 
+                        class="hidden px-6 py-3 bg-amber-900 rounded-3xl">← Предишен</button>
+                <button onclick="nextQuestion()" id="next-btn" 
+                        class="px-8 py-3 bg-amber-700 hover:bg-amber-600 rounded-3xl font-semibold">Следващ →</button>
+            </div>
+            
+            <div id="quiz-result" class="hidden mt-8 text-center">
+                <h3 class="text-3xl font-bold" id="score-text"></h3>
+                <button onclick="restartQuiz()" 
+                        class="mt-6 px-10 py-4 bg-gradient-to-r from-amber-700 to-amber-800 rounded-3xl text-lg">Започни теста отново</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLASHCARDS -->
+    <div id="flashcards" class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-16 hidden">
+        <h2 class="heading-font text-4xl font-bold mb-8 text-center">🔄 Флашкарти</h2>
+        <p class="text-center text-amber-300 mb-10 max-w-md mx-auto">Превърти картата, за да видиш отговора. 10 ключови понятия от бележките ти.</p>
+        
+        <div class="max-w-lg mx-auto">
+            <div onclick="flipCard()" id="flashcard" class="flip-card w-full h-64 cursor-pointer mx-auto">
+                <div id="flashcard-inner" class="flip-card-inner relative w-full h-full rounded-3xl shadow-2xl">
+                    <!-- Front -->
+                    <div id="front" class="flashcard-front absolute inset-0 bg-gradient-to-br from-amber-800 to-amber-950 rounded-3xl flex flex-col items-center justify-center p-8 text-center">
+                        <div id="question-text" class="text-2xl font-medium"></div>
+                        <div class="mt-auto text-xs text-amber-400 flex items-center">
+                            <i class="fa-solid fa-hand-point-up mr-2"></i> Натисни за отговор
+                        </div>
+                    </div>
+                    <!-- Back -->
+                    <div id="back" class="flashcard-back absolute inset-0 bg-[#3c2a1f] rounded-3xl flex flex-col items-center justify-center p-8 text-center border-4 border-amber-400">
+                        <div id="answer-text" class="text-xl leading-relaxed"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-between mt-8">
+                <button onclick="prevCard()" class="flex items-center gap-x-2 text-amber-300 hover:text-amber-100">
+                    <i class="fa-solid fa-chevron-left"></i> Предишна
+                </button>
+                <div id="card-counter" class="text-sm font-medium bg-amber-900/70 px-6 py-2 rounded-3xl">1 / 10</div>
+                <button onclick="nextCard()" class="flex items-center gap-x-2 text-amber-300 hover:text-amber-100">
+                    Следваща <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER / MOTIVATION -->
+    <div class="bg-[#25190f] py-12 text-center border-t border-amber-900">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6">
+            <p class="text-amber-400 text-sm">Алиса, ти ще се справиш блестящо! 🔥</p>
+            <p class="text-xs mt-2 text-amber-500">Създадено специално за теб с ❤️ от Grok • Адаптивно за телефон</p>
+            <button onclick="window.location.reload()" 
+                    class="mt-6 text-xs px-6 py-3 bg-amber-950 hover:bg-amber-900 rounded-3xl">Презареди страницата</button>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script initialization
+        function initializeTailwind() {
+            return {
+                config(userConfig = {}) {
+                    return {
+                        configUser: userConfig,
+                        theme: {
+                            extend: {
+                                colors: {
+                                    primary: '#8b4513'
+                                }
+                            }
+                        }
+                    }
+                },
+                theme(userConfig = {}) {
+                    return {
+                        ...this.defaultTheme(),
+                        ...this.config(userConfig).theme
+                    }
+                },
+                defaultTheme() {
+                    return {
+                        extend: {}
+                    }
+                }
+            }
+        }
+        
+        // Navigation
+        function navigateTo(section) {
+            document.querySelectorAll('div[id]').forEach(div => {
+                if (['home', 'theory', 'characters', 'themes', 'quiz', 'flashcards'].includes(div.id)) {
+                    div.classList.add('hidden')
+                }
+            })
+            const target = document.getElementById(section)
+            if (target) target.classList.remove('hidden')
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+        
+        function showMenu() {
+            const menu = document.getElementById('mobileMenu')
+            menu.classList.toggle('hidden')
+        }
+        
+        function hideMenu() {
+            const menu = document.getElementById('mobileMenu')
+            menu.classList.add('hidden')
+        }
+        
+        // Dark / Light toggle (just for fun)
+        function toggleDarkMode() {
+            const body = document.body
+            if (body.style.filter === 'invert(1) hue-rotate(180deg)') {
+                body.style.filter = ''
+            } else {
+                body.style.filter = 'invert(1) hue-rotate(180deg)'
+            }
+        }
+        
+        // QUIZ DATA (based directly on notes)
+        let currentQuestion = 0
+        let score = 0
+        let selectedAnswers = []
+        
+        const quizData = [
+            {
+                question: "Какво образуват финалната и първата част на романа „Тютюн“?",
+                options: ["Композиционна рамка", "Паралелни сюжети", "Второстепенни линии", "Епилог"],
+                correct: 0
+            },
+            {
+                question: "Какво символизира гроздоберът според бележките?",
+                options: ["Раждането на любовта", "Греховния живот", "Богатството", "Медицината"],
+                correct: 1
+            },
+            {
+                question: "Как се описват персонажите в романа?",
+                options: ["От авторския глас", "Пред погледа на събеседника", "Чрез дневници", "Само чрез диалози"],
+                correct: 1
+            },
+            {
+                question: "Кой от героите претърпява метаморфоза и се превръща в свой антипод?",
+                options: ["Борис", "Ирина", "Бащата на Ирина", "Всички"],
+                correct: 1
+            },
+            {
+                question: "Кой е основният вътрешен конфликт на Ирина?",
+                options: ["Между любовта и семейството", "Между богатството и бедността", "Между София и селото", "Между медицината и литературата"],
+                correct: 0
+            },
+            {
+                question: "Кой мотив се свързва с материалното богатство и духовната бедност?",
+                options: ["Мотив за младостта", "Мотив за властта", "Мотив за човешките ценности", "Мотив за парите"],
+                correct: 3
+            },
+            {
+                question: "Кога е първото издание на романа „Тютюн“?",
+                options: ["1949 г.", "1951 г.", "1954 г.", "1960 г."],
+                correct: 1
+            },
+            {
+                question: "Какво стои над героите според композицията?",
+                options: ["Щастието", "Съдбата", "Богатството", "Любовта"],
+                correct: 1
+            }
+        ]
+        
+        function loadQuizQuestion() {
+            const container = document.getElementById('quiz-container')
+            const q = quizData[currentQuestion]
+            
+            let html = `
+                <div class="mb-8">
+                    <div class="flex justify-between text-xs mb-4 text-amber-400">
+                        <span>ВЪПРОС ${currentQuestion + 1} / ${quizData.length}</span>
+                        <span class="font-medium">Твоят резултат: <span id="current-score">${score}</span></span>
+                    </div>
+                    <h3 class="text-2xl font-medium leading-tight">${q.question}</h3>
+                </div>
+                
+                <div class="space-y-3" id="options">
+            `
+            q.options.forEach((option, index) => {
+                html += `
+                    <button onclick="selectAnswer(${index})" 
+                            class="option-btn w-full text-left px-6 py-5 rounded-3xl border border-amber-700 hover:border-amber-400 transition-colors flex items-center justify-between group">
+                        <span>${option}</span>
+                        <span class="text-xs opacity-0 group-hover:opacity-100">→</span>
+                    </button>
+                `
+            })
+            html += `</div>`
+            
+            container.innerHTML = html
+            document.getElementById('prev-btn').classList.toggle('hidden', currentQuestion === 0)
+        }
+        
+        function selectAnswer(index) {
+            const q = quizData[currentQuestion]
+            selectedAnswers[currentQuestion] = index
+            
+            if (index === q.correct) {
+                score++
+            }
+            
+            // Show feedback briefly
+            const buttons = document.querySelectorAll('.option-btn')
+            buttons.forEach((btn, i) => {
+                btn.disabled = true
+                if (i === q.correct) {
+                    btn.classList.add('border-emerald-400', 'bg-emerald-900/30')
+                } else if (i === index && index !== q.correct) {
+                    btn.classList.add('border-red-400')
+                }
+            })
+            
+            setTimeout(() => {
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++
+                    loadQuizQuestion()
+                } else {
+                    showQuizResult()
+                }
+            }, 1100)
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++
+                loadQuizQuestion()
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--
+                loadQuizQuestion()
+            }
+        }
+        
+        function showQuizResult() {
+            const container = document.getElementById('quiz-container')
+            const percent = Math.round((score / quizData.length) * 100)
+            
+            let message = ''
+            if (percent === 100) message = 'Блестящо! Ти си готова за теста! 🎉'
+            else if (percent >= 75) message = 'Много добре! Остава съвсем малко! 🔥'
+            else if (percent >= 50) message = 'Добре! Прегледай отново бележките и опитай пак.'
+            else message = 'Не се отказвай! Прочети теорията още веднъж.'
+            
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-7xl mb-6">${percent >= 75 ? '🏆' : '📖'}</div>
+                    <h2 class="text-4xl font-bold mb-1">${percent}%</h2>
+                    <p class="text-amber-300">${message}</p>
+                    <div class="mt-12 text-sm font-medium">Правилни отговори: ${score} от ${quizData.length}</div>
+                </div>
+            `
+            document.getElementById('quiz-result').classList.remove('hidden')
+            document.getElementById('next-btn').classList.add('hidden')
+        }
+        
+        function restartQuiz() {
+            currentQuestion = 0
+            score = 0
+            selectedAnswers = []
+            document.getElementById('quiz-result').classList.add('hidden')
+            document.getElementById('next-btn').classList.remove('hidden')
+            loadQuizQuestion()
+        }
+        
+        // FLASHCARDS DATA
+        let currentCard = 0
+        let isFlipped = false
+        
+        const flashcardsData = [
+            {
+                front: "Какво представлява композиционната рамка в „Тютюн“?",
+                back: "Финалната и първата част – смислови противоположности (любовни трепети → край на любовта)"
+            },
+            {
+                front: "Как се описват главните герои?",
+                back: "Пред погледа на събеседника си"
+            },
+            {
+                front: "Кой претърпява метаморфоза?",
+                back: "Ирина се превръща в свой антипод"
+            },
+            {
+                front: "Символиката на гроздобера?",
+                back: "Свързва се с виждането за греховния живот"
+            },
+            {
+                front: "Основен вътрешен конфликт на Ирина?",
+                back: "Избор между Борис и позицията на баща си"
+            },
+            {
+                front: "Мотив за материалното богатство?",
+                back: "Срещу духовната бедност"
+            },
+            {
+                front: "Каква е съдбата на героите?",
+                back: "Трагична обреченост – съдбата извършва своята мрачна сметка"
+            },
+            {
+                front: "Година на първото издание на „Тютюн“?",
+                back: "1951 г."
+            },
+            {
+                front: "Жанрове на романа?",
+                back: "Епически, социален и любовен роман"
+            },
+            {
+                front: "Какъв е Борис?",
+                back: "Озлобен, лишен от чувствителност, жаден за власт"
+            }
+        ]
+        
+        function loadFlashcard() {
+            const frontEl = document.getElementById('question-text')
+            const backEl = document.getElementById('answer-text')
+            const counter = document.getElementById('card-counter')
+            
+            frontEl.textContent = flashcardsData[currentCard].front
+            backEl.textContent = flashcardsData[currentCard].back
+            counter.textContent = `${currentCard + 1} / ${flashcardsData.length}`
+            
+            // Reset flip
+            isFlipped = false
+            document.getElementById('flashcard').classList.remove('flipped')
+        }
+        
+        function flipCard() {
+            isFlipped = !isFlipped
+            document.getElementById('flashcard').classList.toggle('flipped', isFlipped)
+        }
+        
+        function nextCard() {
+            currentCard = (currentCard + 1) % flashcardsData.length
+            loadFlashcard()
+        }
+        
+        function prevCard() {
+            currentCard = (currentCard - 1 + flashcardsData.length) % flashcardsData.length
+            loadFlashcard()
+        }
+        
+        // MAIN INIT
+        function init() {
+            initializeTailwind()
+            
+            // Start on Home
+            document.getElementById('home').classList.remove('hidden')
+            
+            // Load quiz when section is opened
+            const quizObserver = new MutationObserver(() => {
+                if (!document.getElementById('quiz').classList.contains('hidden') && document.getElementById('quiz-container').innerHTML === '') {
+                    loadQuizQuestion()
+                }
+            })
+            quizObserver.observe(document.getElementById('quiz'), { attributes: true })
+            
+            // Load first flashcard
+            const flashcardsObserver = new MutationObserver(() => {
+                if (!document.getElementById('flashcards').classList.contains('hidden')) {
+                    loadFlashcard()
+                    flashcardsObserver.disconnect()
+                }
+            })
+            flashcardsObserver.observe(document.getElementById('flashcards'), { attributes: true })
+            
+            console.log('%c✅ HTML страницата за Алиса е готова! Може да я запишеш като .html файл и да я отвориш на телефона си.', 'color:#f5d6a0; font-family:monospace')
+        }
+        
+        window.onload = init
+    </script>
+</body>
+</html>
